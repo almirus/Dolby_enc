@@ -1,0 +1,65 @@
+name: C++ build
+on: [push, pull_request, workflow_dispatch]
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+      - run: cmake --build build --config Release
+      - run: ctest --test-dir build -C Release -LE corpus --output-on-failure
+      - name: Check CLI
+        run: |
+          ./build/out/Release/ddp-atmos.exe --version
+          ./build/out/Release/ddp-atmos.exe --help
+      - name: Package
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory package
+          Copy-Item build/out/Release/ddp-atmos.exe, README.md, LICENSE package/
+          Compress-Archive -Path package/* -DestinationPath ddp-atmos-windows-x64.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ddp-atmos-windows-x64
+          path: ddp-atmos-windows-x64.zip
+          if-no-files-found: error
+          retention-days: 30
+
+  linux:
+    name: Linux x64 (${{ matrix.compiler }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - compiler: gcc
+            cxx: g++
+          - compiler: clang
+            cxx: clang++
+    env:
+      CXX: ${{ matrix.cxx }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build release
+        run: ./build.sh
+      - name: Test
+        run: ctest --test-dir build-linux -LE corpus --output-on-failure
+      - name: Check CLI
+        run: |
+          ./out/ddp-atmos --version
+          ./out/ddp-atmos --help
+      - name: Package
+        run: |
+          mkdir package
+          cp out/ddp-atmos README.md LICENSE package/
+          tar -czf ddp-atmos-linux-x64-${{ matrix.compiler }}.tar.gz -C package .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ddp-atmos-linux-x64-${{ matrix.compiler }}
+          path: ddp-atmos-linux-x64-${{ matrix.compiler }}.tar.gz
+          if-no-files-found: error
+          retention-days: 30
