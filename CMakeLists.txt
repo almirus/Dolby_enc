@@ -55,13 +55,6 @@ target_include_directories(ddpatmos PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 add_executable(ddp-atmos src/app/main.cpp)
 find_package(Threads REQUIRED)
 target_link_libraries(ddp-atmos PRIVATE ddpatmos Threads::Threads)
-# Refresh the translation unit containing __DATE__/__TIME__ on every build.
-add_custom_target(refresh-build-clock
-  COMMAND ${CMAKE_COMMAND} -E touch "${CMAKE_CURRENT_BINARY_DIR}/build_clock.hpp"
-  BYPRODUCTS "${CMAKE_CURRENT_BINARY_DIR}/build_clock.hpp")
-add_dependencies(ddp-atmos refresh-build-clock)
-target_include_directories(ddp-atmos PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
-target_compile_definitions(ddp-atmos PRIVATE DDP_ATMOS_CMAKE_BUILD)
 
 add_executable(dump-eac3 src/tools/dump_eac3.cpp)
 target_link_libraries(dump-eac3 PRIVATE ddpatmos)
@@ -81,9 +74,6 @@ add_test(NAME truehd-514-tests COMMAND truehd-encoder-tests --layout 5.1.4)
 add_executable(pcm-wav-reader-tests tests/pcm_wav_reader_tests.cpp)
 target_link_libraries(pcm-wav-reader-tests PRIVATE ddpatmos)
 add_test(NAME pcm-wav-reader-tests COMMAND pcm-wav-reader-tests)
-add_executable(app-version-tests tests/app_version_tests.cpp)
-target_include_directories(app-version-tests PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src")
-add_test(NAME app-version-tests COMMAND app-version-tests)
 add_executable(encoder-tests tests/encoder_tests.cpp)
 target_link_libraries(encoder-tests PRIVATE ddpatmos)
 add_test(NAME encoder-tests COMMAND encoder-tests)

@@ -56,8 +56,6 @@ cl %FLAGS% /c ..\src\app\main.cpp
 if errorlevel 1 goto :fail
 cl %FLAGS% @lib.rsp /Fe:..\out\ddp-atmos.exe
 if errorlevel 1 goto :fail
-cl %FLAGS% ..\tests\app_version_tests.cpp /Fe:..\out\app-version-tests.exe
-if errorlevel 1 goto :fail
 cl %FLAGS% /c ..\src\tools\dump_eac3.cpp
 if errorlevel 1 goto :fail
 cl %FLAGS% @tool.rsp /Fe:..\out\dump-eac3.exe

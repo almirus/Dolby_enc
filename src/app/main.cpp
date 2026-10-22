@@ -1,9 +1,6 @@
 #include "encode/transcoder.hpp"
 #include "progress.hpp"
 #include "version.hpp"
-#ifdef DDP_ATMOS_CMAKE_BUILD
-#include "build_clock.hpp"
-#endif
 
 #include <cerrno>
 #include <charconv>
@@ -119,11 +116,6 @@ int main(int argc, char** argv) {
         return 2;
     }
     std::cerr << "ddp-atmos " << atmos::app::version << '\n';
-    if (atmos::app::expired(atmos::app::version,atmos::app::build_time(__DATE__,__TIME__),
-            std::chrono::time_point_cast<std::chrono::seconds>(std::chrono::system_clock::now()))) {
-        std::cerr << "error: this alfa build expired 15 days after compilation; rebuild the application.\n";
-        return 1;
-    }
     if (options.codec=="truehd")
         std::cerr << "Experimental TrueHD Atmos encoding with static channels.\n";
     else if (options.atmos && !options.output.empty())

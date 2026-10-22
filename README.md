@@ -38,9 +38,7 @@ source object scene with a fixed channel bed. TrueHD CBI encodes existing
 height channels; it does not generate moving objects or upmix surround audio
 into new height content.
 
-The current version is **0.0.1 alfa**. Alfa builds stop processing audio
-**15 days after compilation** and must be rebuilt. `--help` and `--version`
-remain available.
+The current version is **0.0.1 alfa**.
 
 ## Requirements
 
@@ -101,8 +99,7 @@ Manual builds are available on the [Build workflow page](https://github.com/almi
 
 Successful jobs upload archives containing the CLI, README, and license:
 `ddp-atmos-windows-x64.zip`, `ddp-atmos-linux-x64-gcc.tar.gz`, and
-`ddp-atmos-linux-x64-clang.tar.gz`. Artifacts are retained for 30 days;
-the alfa executable lifetime still applies.
+`ddp-atmos-linux-x64-clang.tar.gz`. Artifacts are retained for 30 days.
 
 Tests labeled `corpus` require local media in `test_file/` and neighboring
 directories, which are not included in Git. Remove `-LE corpus` only when
@@ -176,9 +173,7 @@ bed 5.1.2, 5.1.4 или 7.1.4, заменяя исходные объекты к
 Движущиеся объекты и автоматическое создание высоты из обычного surround
 этот режим не реализует. Выход TrueHD: raw `.thd` или Matroska с `--mkv`.
 
-Версия **0.0.1 alfa** прекращает обработку аудио через **15 дней после
-компиляции**. После этого нужна новая сборка. `--help` и `--version`
-остаются доступны.
+Текущая версия — **0.0.1 alfa**.
 
 ## Сборка
 
@@ -250,8 +245,7 @@ ddp-atmos -i film.mkv --objects-output-dir stems
 
 При push и pull request проверяются Windows x64 (MSVC) и Linux x64
 (GCC/Clang). После сборки запускаются автономные тесты и CLI-проверки.
-В Artifacts доступны архивы с программой, README и лицензией на 30 дней;
-15-дневный срок работы alfa-сборки действует независимо от этого.
+В Artifacts доступны архивы с программой, README и лицензией на 30 дней.
 Ручной запуск — на [странице Build](https://github.com/almirus/Dolby_enc/actions/workflows/build.yml).
 
 Тесты с меткой `corpus` используют локальные медиа из `test_file/` и соседних
